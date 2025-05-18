@@ -25,14 +25,14 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 
-        // TODO 1. 获取请求头中的Token
+        // 1. 获取请求头中的Token
         String token = request.getHeader("authorization");
         if (StrUtil.isBlank(token)) {
             // 不存在，拦截，返回 401 状态码
             response.setStatus(401);
             return false;
         }
-        // TODO 2. 基于Token 获取 Redis 中的用户
+        // 2. 基于Token 获取 Redis 中的用户
         String key = RedisConstants.LOGIN_USER_KEY + token;
         Map<Object, Object> userMap= stringRedisTemplate.opsForHash()
                 .entries(key);
@@ -44,14 +44,14 @@ public class LoginInterceptor implements HandlerInterceptor {
             return false;
         }
 
-        // TODO 5. 将查询到的Hash数据转化为UserDTO对象
+        // 5. 将查询到的Hash数据转化为UserDTO对象
         UserDTO userDTO = BeanUtil.fillBeanWithMap(userMap, new UserDTO(), false);
-        // TODO 6. 存在，保存用户信息到ThreadLocal
+        // 6. 存在，保存用户信息到ThreadLocal
         UserHolder.saveUser(userDTO);
 
-        // TODO 7. 刷新Token 有效期
+        // 7. 刷新Token 有效期
         stringRedisTemplate.expire(key, RedisConstants.LOGIN_USER_TTL, TimeUnit.MINUTES);
-        // TODO 8. 放行
+        // 8. 放行
         return true;
     }
 
