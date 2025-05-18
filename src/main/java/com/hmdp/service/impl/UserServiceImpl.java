@@ -1,7 +1,6 @@
 package com.hmdp.service.impl;
 
 import cn.hutool.core.util.RandomUtil;
-import cn.hutool.crypto.symmetric.ChaCha20;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hmdp.dto.LoginFormDTO;
 import com.hmdp.dto.Result;
@@ -75,7 +74,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
 
         // 7.存在，保存用户信息到session
-        session.setAttribute("user",user);
+        session.setAttribute("user", user);
 
         return Result.ok();
     }
